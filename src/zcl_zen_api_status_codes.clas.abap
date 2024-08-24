@@ -83,7 +83,15 @@ ENDCLASS.
 
 
 
-CLASS zcl_zen_api_status_codes IMPLEMENTATION.
+CLASS ZCL_ZEN_API_STATUS_CODES IMPLEMENTATION.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Static Public Method ZCL_ZEN_API_STATUS_CODES=>GET_STATUS_MESSAGE
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] STATUS_CODE                    TYPE        I
+* | [<-()] STATUS_MESSAGE                 TYPE        STRING
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD get_status_message.
     CASE status_code.
       WHEN c_continue.
