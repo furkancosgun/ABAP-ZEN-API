@@ -26,7 +26,7 @@ This section explains how to define an API using the Zen API Framework. By exten
 
 3. **Register Middleware**: Middleware processes requests before they reach the route handlers. Register your middleware using the `me->use( middleware = ... )` statement.
 
-4. **Specify the Base Path**: Override the `root_path` method to set the base path for the API. Ensure this path matches the configuration in the SICF transaction code.
+4. **Specify the Base Path**: Override the `get_root` method to set the base path for the API. Ensure this path matches the configuration in the SICF transaction code.
 
 Here’s an example implementation of an API class:
 
@@ -40,7 +40,7 @@ CLASS zcl_zen_api_demo_api DEFINITION
   PUBLIC SECTION.
     METHODS:
       constructor,            " Initializes API routes and middleware
-      root_path REDEFINITION. " Defines the base path for the API
+      get_root REDEFINITION.  " Defines the base path for the API
 ENDCLASS.
 
 CLASS zcl_zen_api_demo_api IMPLEMENTATION.
@@ -65,10 +65,10 @@ CLASS zcl_zen_api_demo_api IMPLEMENTATION.
     me->use( middleware = lo_middleware ).
   ENDMETHOD.
 
-  METHOD root_path.
+  METHOD get_root.
     " Set the base path for this API
     " This path should match the one configured in SICF
-    path = '/zen_api/demo'.
+    root = '/zen_api/demo'.
   ENDMETHOD.
 
 ENDCLASS.
@@ -154,9 +154,9 @@ The `zif_zen_api_request` interface defines the available properties and methods
 
 **Properties:**
 
-- `root_path`: The base path of the API. (e.g., `/api/v1`)
+- `root`: The base path of the API. (e.g., `/api/v1`)
 - `path`: The endpoint path of the current request. (e.g., `/users`)
-- `full_path`: The full path of the request, combining `root_path` and `path`. (e.g., `/api/v1/users`)
+- `full_path`: The full path of the request, combining `root` and `path`. (e.g., `/api/v1/users`)
 - `method`: The HTTP method of the request (GET, POST, etc.).
 - `query_parameters`: The query parameters of the request.
 - `content_type`: The content type of the request.
