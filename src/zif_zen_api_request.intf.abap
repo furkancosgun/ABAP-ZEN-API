@@ -1,7 +1,7 @@
 INTERFACE zif_zen_api_request
   PUBLIC .
   DATA:
-    root_path        TYPE string    READ-ONLY, "/api/v1
+    root             TYPE string    READ-ONLY, "/api/v1
     path             TYPE string    READ-ONLY, "/users
     full_path        TYPE string    READ-ONLY, "/api/v1/users
     method           TYPE zcl_zen_api_http_methods=>ty_method READ-ONLY,
