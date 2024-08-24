@@ -8,9 +8,9 @@ CLASS zcl_zen_api_manager DEFINITION
       if_http_extension.
 
     METHODS:
-      root_path ABSTRACT
+      get_root ABSTRACT
         RETURNING
-          VALUE(path) TYPE string.
+          VALUE(root) TYPE string.
 
     METHODS:
       get
@@ -54,24 +54,52 @@ ENDCLASS.
 
 
 
-CLASS zcl_zen_api_manager IMPLEMENTATION.
+CLASS ZCL_ZEN_API_MANAGER IMPLEMENTATION.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->DELETE
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] PATH                           TYPE        STRING
+* | [--->] ROUTE                          TYPE REF TO ZIF_ZEN_API_ROUTE
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD:delete.
     INSERT VALUE ty_route( path = path method = zcl_zen_api_http_methods=>c_delete route = route ) INTO TABLE mt_routes.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->GET
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] PATH                           TYPE        STRING
+* | [--->] ROUTE                          TYPE REF TO ZIF_ZEN_API_ROUTE
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD:get.
     INSERT VALUE ty_route( path = path method = zcl_zen_api_http_methods=>c_get route = route ) INTO TABLE mt_routes.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->HEAD
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] PATH                           TYPE        STRING
+* | [--->] ROUTE                          TYPE REF TO ZIF_ZEN_API_ROUTE
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD:head.
+    INSERT VALUE ty_route( path = path method = zcl_zen_api_http_methods=>c_head route = route ) INTO TABLE mt_routes.
+  ENDMETHOD.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->IF_HTTP_EXTENSION~HANDLE_REQUEST
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] SERVER                         TYPE REF TO IF_HTTP_SERVER
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD:if_http_extension~handle_request.
     DATA:lo_request  TYPE REF TO zif_zen_api_request,
          lo_response TYPE REF TO zif_zen_api_response.
 
-    lo_request  = NEW zcl_zen_api_request( root_path = me->root_path( ) http_request = server->request ).
+    lo_request  = NEW zcl_zen_api_request( root = me->get_root( ) http_request = server->request ).
     lo_response = NEW zcl_zen_api_response( http_response = server->response ).
 
 
@@ -117,22 +145,44 @@ CLASS zcl_zen_api_manager IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->PATCH
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] PATH                           TYPE        STRING
+* | [--->] ROUTE                          TYPE REF TO ZIF_ZEN_API_ROUTE
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD:patch.
     INSERT VALUE ty_route( path = path method = zcl_zen_api_http_methods=>c_patch route = route ) INTO TABLE mt_routes.
   ENDMETHOD.
 
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->POST
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] PATH                           TYPE        STRING
+* | [--->] ROUTE                          TYPE REF TO ZIF_ZEN_API_ROUTE
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD:post.
     INSERT VALUE ty_route( path = path method = zcl_zen_api_http_methods=>c_post route = route ) INTO TABLE mt_routes.
   ENDMETHOD.
 
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->PUT
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] PATH                           TYPE        STRING
+* | [--->] ROUTE                          TYPE REF TO ZIF_ZEN_API_ROUTE
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD:put.
     INSERT VALUE ty_route( path = path method = zcl_zen_api_http_methods=>c_put route = route ) INTO TABLE mt_routes.
   ENDMETHOD.
 
-  METHOD:head.
-    INSERT VALUE ty_route( path = path method = zcl_zen_api_http_methods=>c_head route = route ) INTO TABLE mt_routes.
-  ENDMETHOD.
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_MANAGER->USE
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] MIDDLEWARE                     TYPE REF TO ZIF_ZEN_API_MIDDLEWARE
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD:use.
     APPEND middleware TO mt_middlewares.
   ENDMETHOD.
