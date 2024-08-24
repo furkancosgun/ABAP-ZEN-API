@@ -4,21 +4,26 @@ CLASS zcl_zen_api_demo_middleware DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    INTERFACES: zif_zen_api_middleware.
-  PROTECTED SECTION.
-  PRIVATE SECTION.
+    INTERFACES: zif_zen_api_middleware. " Implements the middleware interface for processing requests
 ENDCLASS.
 
-CLASS zcl_zen_api_demo_middleware IMPLEMENTATION.
 
+
+CLASS ZCL_ZEN_API_DEMO_MIDDLEWARE IMPLEMENTATION.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_DEMO_MIDDLEWARE->ZIF_ZEN_API_MIDDLEWARE~PROCESS
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] IO_REQUEST                     TYPE REF TO ZIF_ZEN_API_REQUEST
+* | [--->] IO_RESPONSE                    TYPE REF TO ZIF_ZEN_API_RESPONSE
+* | [<-()] HAS_NEXT                       TYPE        BOOLEAN
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD zif_zen_api_middleware~process.
-    " Middleware processing logic
-    " For example, logging request details or modifying the request
-    " Log the request or perform other actions
+    " Perform actions such as logging the request or modifying it
+    " Example: Log the request details or perform other tasks
 
-    " Indicate that processing should continue
+    " Decide whether to continue processing the request
     has_next = abap_true.
   ENDMETHOD.
-
 ENDCLASS.
-
