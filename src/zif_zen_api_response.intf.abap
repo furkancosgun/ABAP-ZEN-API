@@ -5,9 +5,7 @@ INTERFACE zif_zen_api_response
       IMPORTING
         status_code  TYPE i DEFAULT zcl_zen_api_status_codes=>c_ok
         content_type TYPE string DEFAULT zcl_zen_api_content_types=>c_application_json
-        data         TYPE any OPTIONAL
-      RAISING
-        zcx_zen_api_unsupported_type.
+        data         TYPE any OPTIONAL.
   METHODS:
     redirect
       IMPORTING
