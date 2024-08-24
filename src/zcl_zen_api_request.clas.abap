@@ -9,7 +9,7 @@ CLASS zcl_zen_api_request DEFINITION
 
     METHODS constructor
       IMPORTING
-        root_path    TYPE string
+        root         TYPE string
         http_request TYPE REF TO if_http_request .
   PRIVATE SECTION.
     DATA:http_request TYPE REF TO if_http_request.
@@ -26,11 +26,17 @@ ENDCLASS.
 
 
 
-CLASS zcl_zen_api_request IMPLEMENTATION.
+CLASS ZCL_ZEN_API_REQUEST IMPLEMENTATION.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_REQUEST->CONSTRUCTOR
+* +-------------------------------------------------------------------------------------------------+
+* | [--->] ROOT                           TYPE        STRING
+* | [--->] HTTP_REQUEST                   TYPE REF TO IF_HTTP_REQUEST
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD constructor.
-    me->zif_zen_api_request~root_path    = root_path.
+    me->zif_zen_api_request~root    = root.
     me->http_request = http_request.
     me->prepare_method( ).
     me->prepare_path( ).
@@ -43,16 +49,28 @@ CLASS zcl_zen_api_request IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_BODY
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_body.
     me->zif_zen_api_request~body = me->http_request->get_cdata( ).
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_CONTENT_TYPE
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_content_type.
     me->zif_zen_api_request~content_type = me->http_request->get_header_field( name = 'Content-Type' ).
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_FORM_DATA
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_form_data.
     me->http_request->get_form_fields(
       CHANGING
@@ -61,6 +79,10 @@ CLASS zcl_zen_api_request IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_HEADERS
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_headers.
     me->http_request->get_header_fields(
       CHANGING
@@ -69,18 +91,30 @@ CLASS zcl_zen_api_request IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_METHOD
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_method.
     me->zif_zen_api_request~method = http_request->get_method( ).
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_PATH
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_path.
     me->zif_zen_api_request~full_path = http_request->get_header_field( name = '~path' ).
     me->zif_zen_api_request~path      = me->zif_zen_api_request~full_path.
-    REPLACE FIRST OCCURRENCE OF REGEX |^{ me->zif_zen_api_request~root_path }| IN me->zif_zen_api_request~path WITH ''.
+    REPLACE FIRST OCCURRENCE OF REGEX |^{ me->zif_zen_api_request~root }| IN me->zif_zen_api_request~path WITH ''.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_QUERY_PARAMETERS
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_query_parameters.
     DATA(query_string) = me->http_request->get_header_field( name = '~query_string' ).
     SPLIT query_string AT '&' INTO TABLE DATA(lt_query_splits).
@@ -95,6 +129,10 @@ CLASS zcl_zen_api_request IMPLEMENTATION.
   ENDMETHOD.
 
 
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Private Method ZCL_ZEN_API_REQUEST->PREPARE_RAW
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD prepare_raw.
     me->zif_zen_api_request~raw = me->http_request->get_data( ).
   ENDMETHOD.
