@@ -13,6 +13,7 @@ CLASS zcx_zen_api_unsupported_type DEFINITION
         IMPORTING
           previous LIKE previous OPTIONAL
           message  TYPE string OPTIONAL.
+  PRIVATE SECTION.
     DATA:message TYPE string.
 ENDCLASS.
 
