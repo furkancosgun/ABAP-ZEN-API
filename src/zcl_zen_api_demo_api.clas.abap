@@ -5,20 +5,22 @@ CLASS zcl_zen_api_demo_api DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-
     METHODS:
-      " Constructor to initialize the API routes and middleware
-      constructor,
-
-      " Define the root path for the API
-      root_path
-        REDEFINITION.
+      constructor,            " Initializes API routes and middleware
+      get_root REDEFINITION.  " Defines the base path for the API
 ENDCLASS.
 
-CLASS zcl_zen_api_demo_api IMPLEMENTATION.
 
+
+CLASS ZCL_ZEN_API_DEMO_API IMPLEMENTATION.
+
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_DEMO_API->CONSTRUCTOR
+* +-------------------------------------------------------------------------------------------------+
+* +--------------------------------------------------------------------------------------</SIGNATURE>
   METHOD constructor.
-    " Call the superclass constructor
+    " Initialize the base API settings
     super->constructor( ).
 
     " Create instances of route and middleware classes
@@ -26,21 +28,26 @@ CLASS zcl_zen_api_demo_api IMPLEMENTATION.
     DATA(lo_middleware) = NEW zcl_zen_api_demo_middleware( ).
 
     " Define API routes and associate them with route handlers
-    me->get( path = '/users' route = lo_route ).
-    me->post( path = '/' route = lo_route ).
-    me->put( path = '/' route = lo_route ).
-    me->patch( path = '/' route = lo_route ).
-    me->delete( path = '/' route = lo_route ).
-    me->head( path = '/' route = lo_route ).
+    me->get( path = '' route = lo_route ).
+    me->post( path = '' route = lo_route ).
+    me->put( path = '' route = lo_route ).
+    me->patch( path = '' route = lo_route ).
+    me->delete( path = '' route = lo_route ).
+    me->head( path = '' route = lo_route ).
 
-    " Register the middleware for processing requests
+    " Register the middleware for request processing
     me->use( middleware = lo_middleware ).
   ENDMETHOD.
 
-  METHOD root_path.
+
+* <SIGNATURE>---------------------------------------------------------------------------------------+
+* | Instance Public Method ZCL_ZEN_API_DEMO_API->GET_ROOT
+* +-------------------------------------------------------------------------------------------------+
+* | [<-()] ROOT                           TYPE        STRING
+* +--------------------------------------------------------------------------------------</SIGNATURE>
+  METHOD get_root.
     " Set the base path for this API
-    path = '/zexample'.
+    " This path should match the one configured in SICF
+    root = '/zen_api/demo'.
   ENDMETHOD.
-
 ENDCLASS.
-
